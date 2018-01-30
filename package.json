@@ -1,0 +1,24 @@
+{
+  "name": "statusPage",
+  "version": "2.0.5",
+  "description": "Statuspage Test",
+  "author": "steve",
+  "main": "functions/__main__.js",
+  "dependencies": {
+    "aws-sdk": "^2.96.0",
+    "ejs": "^2.5.7",
+    "lib": "^3.0.1",
+    "mime": "^1.4.0"
+  },
+  "private": false,
+  "stdlib": {
+    "build": "faaslang",
+    "name": "steve/statusPage",
+    "timeout": 10000,
+    "publish": false,
+    "personalize": {
+      "keys": [],
+      "user": []
+    }
+  }
+}

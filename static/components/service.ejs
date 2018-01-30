@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+
+<script>
+  var latencyThreshold = <%- JSON.stringify(latencyThreshold) %>;
+  var isLastService = <%- JSON.stringify(isLastService) %>;
+</script>
+
+
+<div class="service-row">
+
+    <div class="service-info">
+      <span class="service-info-title"><%= displayName %></span>
+      <span class="service-subtext"> <%= url %> </span>
+    </div>
+
+    <div class="service-status-week-container">
+      <% for (var day = 0; day < 7; day++) { %>
+        <div class="service-status-day-container">
+          <% for (var row = 0; row < 6; row++) { %>
+            <div class="service-status-row">
+              <% for (var column = 0; column < 4; column++) { %>
+                <% var hour = row * 4 + column; %>
+
+                  <% if (logs[day] && logs[day][hour]) { %>
+
+
+                    <% if (logs[day][hour].responseCode > 399) { %>
+
+                      <div class="hour red">
+                        <div class="hour-tooltip">
+                          <div>
+                            <%= `${hour}:00` %>
+                            <span class="hour-tooltip-subtext">UTC</span></div>
+                          <div>
+                            <%= 'Status Code: ' + logs[day][hour].responseCode %>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    <% } else if (logs[day][hour].latency > latencyThreshold) { %>
+
+                      <div class="hour yellow">
+                        <div class="hour-tooltip">
+                          <div>
+                            <%= `${hour}:00` %>
+                            <span class="hour-tooltip-subtext">UTC</span></div>
+                          <div>
+                            <%= Math.floor(logs[day][hour].latency) + 'ms' %>
+                          </div>
+                        </div>
+                      </div>
+
+                    <% } else { %>
+
+                      <div class="hour green">
+                        <div class="hour-tooltip">
+                          <div>
+                            <%= `${hour}:00` %>
+                            <span class="hour-tooltip-subtext">UTC</span></div>
+                          <div>
+                            <%= Math.floor(logs[day][hour].latency) + 'ms' %>
+                          </div>
+                        </div>
+                      </div>
+
+                    <% } %>
+
+                  <% } else { %>
+
+                    <div class="hour grey">
+                      <div class="hour-tooltip">
+                        <div>
+                          <%= `${hour}:00` %>
+                          <span class="hour-tooltip-subtext">UTC</span></div>
+                        <div>Data not available</div>
+                      </div>
+                    </div>
+
+                  <% } %>
+
+                <% } %>
+              </div>
+            <% } %>
+            <% if (isLastService) { %>
+
+              <% var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+              var currentDay = new Date().getDay();
+              days = days.concat(days.splice(0, currentDay + 1)); %>
+
+              <div class="service-status-day-label">
+                <%= days[day] %>
+              </div>
+
+            <% } %>
+          </div>
+        <% } %>
+      </div>
+
+
+
+    <div class="service-uptime">
+      <div class="service-info-title">
+        <%= upTime %>% Uptime
+      </div>
+      <div class="service-subtext">
+        This week
+      </div>
+    </div>
+
+</div>
