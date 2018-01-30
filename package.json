@@ -1,7 +1,7 @@
 {
   "name": "statusPage",
-  "version": "2.0.5",
-  "description": "Statuspage Test",
+  "version": "1.0.0",
+  "description": "",
   "author": "steve",
   "main": "functions/__main__.js",
   "dependencies": {

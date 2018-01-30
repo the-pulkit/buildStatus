@@ -2,6 +2,8 @@ const ejs = require('ejs');
 const path = require('path');
 
 const templatePath = path.join(__dirname, '/../static/components/index.ejs');
+
+// Replace this with the endpoints you set the task for
 const URLS = [
   {
     displayName: 'API',
