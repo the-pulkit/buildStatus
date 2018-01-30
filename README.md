@@ -1,0 +1,1 @@
+For installation instructions see [my guide](https://codeburst.io/build-a-serverless-ping-service-status-page-in-5-steps-with-stdlib-scheduled-tasks-6bdd164e67dc)
