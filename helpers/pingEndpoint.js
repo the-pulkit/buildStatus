@@ -10,7 +10,7 @@ const pingEndpoint = url => {
 
     const request = httpLib.get(url, response => {
       timer.firstResponse = new Date().valueOf();
-      const responseCode = response.responseCode;
+      const responseCode = response.statusCode;
 
       if (response.responseCode < 200 || response.responseCode > 399) {
         resolve({

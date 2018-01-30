@@ -1,6 +1,6 @@
 {
   "name": "@steve/statusPage",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "publish": true,
   "description": "A Status Page powered by Scheduled Tasks and DynamoDB",
   "env": [
