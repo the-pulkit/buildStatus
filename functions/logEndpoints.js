@@ -1,5 +1,5 @@
-const dynamodb = require('../helpers/dynamodb');
-const pingEndpoint = require('../helpers/pingEndpoint');
+const dynamodb = require('../helpers/dynamodb')
+const pingEndpoint = require('../helpers/pingEndpoint')
 
 /**
  * @param {array} urls
@@ -8,9 +8,9 @@ const pingEndpoint = require('../helpers/pingEndpoint');
  */
 module.exports = async (urls, key, context) => {
   if (key !== process.env.AUTH_KEY) {
-    throw new Error('Invalid auth key');
+    throw new Error('Invalid auth key')
   }
 
-  let requests = await Promise.all(urls.map(url => pingEndpoint(url)));
-  return Promise.all(requests.map(item => dynamodb.addItem(item)));
-};
+  let requests = await Promise.all(urls.map(url => pingEndpoint(url)))
+  return Promise.all(requests.map(item => dynamodb.addItem(item)))
+}

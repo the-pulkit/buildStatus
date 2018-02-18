@@ -1,7 +1,9 @@
-const ejs = require('ejs');
-const path = require('path');
+const path = require('path')
+const { promisify } = require('util')
 
-const templatePath = path.join(__dirname, '/../static/components/index.ejs');
+const renderFile = promisify(require('ejs').renderFile)
+
+const templatePath = path.join(__dirname, '/../static/components/index.ejs')
 
 // Replace this with the endpoints you set the task for
 const URLS = [
@@ -13,12 +15,14 @@ const URLS = [
     displayName: 'Dotcom',
     url: 'https://www.stdlib.com'
   }
-];
+]
+
+let app
 
 /**
- * @returns {buffer}
+ * @returns {object.http}
  */
-module.exports = (context, callback) => {
+module.exports = async (context) => {
   let templateVars = {
     displayNames: URLS.map(url => url.displayName),
     services: URLS.map(url => url.url),
@@ -26,9 +30,15 @@ module.exports = (context, callback) => {
     title: process.env.TITLE,
     mainPageURL: process.env.MAIN_PAGE_URL,
     logoURL: process.env.LOGO_URL
-  };
+  }
 
-  ejs.renderFile(templatePath, templateVars, {}, (err, data) => {
-    return callback(err, Buffer.from(data || ''), { 'Content-Type': 'text/html' });
-  });
-};
+  app = app || await renderFile(templatePath, templateVars)
+
+  return {
+    headers: {
+      'Content-Type': 'text/html'
+    },
+    body: app,
+    statusCode: 200
+  }
+}
