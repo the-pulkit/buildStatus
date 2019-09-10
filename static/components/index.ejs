@@ -14,8 +14,6 @@
   <link href="static/loader.css" rel="stylesheet">
   <script src="static/lib.js"></script>
 
-  <link rel="icon" type="image/png" href="https://stdlib.com/static/images/stdlib-square-logo-32.png">
-
   <title> <%= title %> </title>
 
 </head>
@@ -29,7 +27,8 @@
 
     services.map(function (service, index) {
       var isLastService = index === services.length - 1 ? true : false;
-      lib['<%- servicePath %>.loadService'](service, displayNames[index], isLastService, function(err, results) {
+      console.log(isLastService);
+      lib['<%- servicePath %>.loadService']({ url: service, displayName: displayNames[index], isLastService }, function(err, results) {
 
         if (err) {
           console.log(err);

@@ -21,24 +21,33 @@
               <% for (var column = 0; column < 4; column++) { %>
                 <% var hour = row * 4 + column; %>
 
-                  <% if (logs[day] && logs[day][hour]) { %>
+                  <% var d = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                  var currentD = new Date().getDay();
+                  d = d.concat(d.splice(0, currentD + 1));
+                  var curr = logs[d[day]]; %>
+
+                  <% if (curr && curr[hour]) { %>
 
 
-                    <% if (logs[day][hour].responseCode > 399) { %>
-
+                    <% if (curr[hour].responseCode > 399 || !curr[hour].latency) { %>
+                      <% var lat = curr[hour].reduce((acc, cur) => { %>
+                        <% acc = acc + cur; %>
+                        <% return acc; %>
+                      <% }, 0); %>
+                      <% lat = Math.floor(lat / curr[hour].length); %>
                       <div class="hour red">
                         <div class="hour-tooltip">
                           <div>
                             <%= `${hour}:00` %>
                             <span class="hour-tooltip-subtext">UTC</span></div>
                           <div>
-                            <%= 'Status Code: ' + logs[day][hour].responseCode %>
+                            <%= 'Incomplete! Current Latency: ' + lat %>
                           </div>
                         </div>
                       </div>
 
 
-                    <% } else if (logs[day][hour].latency > latencyThreshold) { %>
+                    <% } else if (curr[hour].latency > latencyThreshold) { %>
 
                       <div class="hour yellow">
                         <div class="hour-tooltip">
@@ -46,7 +55,7 @@
                             <%= `${hour}:00` %>
                             <span class="hour-tooltip-subtext">UTC</span></div>
                           <div>
-                            <%= Math.floor(logs[day][hour].latency) + 'ms' %>
+                            <%= Math.floor(curr[hour].latency) + 'ms' %>
                           </div>
                         </div>
                       </div>
@@ -59,7 +68,7 @@
                             <%= `${hour}:00` %>
                             <span class="hour-tooltip-subtext">UTC</span></div>
                           <div>
-                            <%= Math.floor(logs[day][hour].latency) + 'ms' %>
+                            <%= Math.floor(curr[hour].latency) + 'ms' %>
                           </div>
                         </div>
                       </div>

@@ -1,10 +1,9 @@
 const path = require('path')
-const promisify = require('util')
+const { promisify } = require('util')
 
-const lib = require('lib')
 const renderFile = promisify(require('ejs').renderFile)
 
-const getLogsAndUpTime = require('../helpers/getLogsAndUpTime')
+const getData = require('../helpers/getData.js')
 const templatePath = path.join(__dirname, '/../static/components/service.ejs')
 
 let service
@@ -16,8 +15,7 @@ let service
  * @returns {object.http}
  */
 module.exports = async (url, displayName, isLastService, context) => {
-  let data = await lib[`${context.service.identifier}.getPastWeek`](url)
-  let [logs, upTime] = getLogsAndUpTime(data)
+  let [logs, upTime] = await getData();
 
   url = url.replace(/(^\w+:|^)\/\//, '')
   if (url.indexOf('/') !== -1) {
@@ -29,9 +27,11 @@ module.exports = async (url, displayName, isLastService, context) => {
     displayName: displayName,
     logs: logs,
     upTime: upTime,
-    latencyThreshold: process.env.LATENCY_THRESHOLD,
+    latencyThreshold: 350,
     isLastService: isLastService
   }
+
+  console.log(templateVars)
 
   service = service || (await renderFile(templatePath, templateVars))
 

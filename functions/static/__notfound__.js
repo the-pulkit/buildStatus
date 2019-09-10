@@ -10,7 +10,7 @@ let staticFiles = readFiles(filepath)
  * Endpoint that serves static files.
  * @returns {object.http}
  */
-module.exports = (context) => {
+module.exports = async (context) => {
   // Hot reload for local development
   if (context.service && context.service.environment === 'local') {
     staticFiles = readFiles(filepath)
