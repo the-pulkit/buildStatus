@@ -7,7 +7,7 @@ Using [Standard Library's](https://stdlib.com) task scheduling API alongside Air
 ![Screenshot](/readme/images/completed.png)
 
 ## **Deploying this Application**
-
+***
 First, make sure that you have a Standard Library account, as well as an Airtable account. Once you have those, add [this base](https://airtable.com/addBaseFromShare/shrQLyQ6TOa9txVXT) to Airtable, and populate the URL and Descriptions columns accordingly. It will end up looking something like this:
 
 ![Table](/readme/images/sites.png)
@@ -18,6 +18,78 @@ Now, **Create a New Project**, and fill out the **Choose Event and APIs** dialog
 
 This will form the bulk of the logic that will be responsible for populating our Airtable Base with information surrounding our site's performance. Click on **Create Workflow** and proceed to **Link Resources**. If this is your first time linking an Airtable account, make sure that you have your Airtable email and API key on hand in order to get up and running.
 
-Once you have linked your Airtable account and selected the Status Page base that we created earlier, you are ready to configure your workflow APIs.
+Once you have linked your Airtable account and selected the Status Page base that we created earlier, you are ready to configure your workflow APIs. On the **Configure Workflow APIs** tab, click on the **Developer Mode** button, and replace the code that you are able to edit with the snippet below.
 
-<script src="https://gist.github.com/k-2tha-brimm/33f6047b9b06babd49308a48f1df3102.js"></script>
+```
+if(new Date().getMinutes() % 10 !== 0) {
+    return;
+  }
+  
+  let workflow = {};
+  
+  // [Workflow Step 1]
+  
+  console.log(`Running airtable.query[@0.3.3].select()...`);
+  
+  workflow.selectQueryResult = await lib.airtable.query['@0.3.3'].select({
+    table: `URIs`,
+    where: [
+      {}
+    ],
+    limit: {
+      'count': 0,
+      'offset': 0
+    }
+  });
+  
+  // [Workflow Step 2]
+  
+  console.log(`Running http.request[@0.1.0]()...`);
+  
+  for(let row of workflow.selectQueryResult.rows) {
+    workflow.response = await lib.http.request['@0.1.0']({
+      url: row.fields.URL,
+      options: {}
+    }).catch(err => {
+      console.log(err);
+    });
+    
+    // [Workflow Step 3]
+    
+    if(!workflow.response) {
+      continue;
+    }
+    
+    console.log(`Running airtable.query[@0.3.3].insert()...`);
+    
+    workflow.insertQueryResult = await lib.airtable.query['@0.3.3'].insert({
+      table: `Log`,
+      fields: {
+        'Duration': workflow.response.timings.phases.total,
+        'Status Code': workflow.response.statusCode,
+        'URL': [row.id]
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  };
+  ```
+You will need to **Run with Test Event**, and then click on the blue **Next** button. In the final screen you will give your workflow a name and click **Finish**. Our workflow will now populate our Airtable base with logs every ten minutes.
+
+## **Visualizing Our Status** ##
+***
+[<img src="https://deploy.stdlib.com/static/images/deploy.svg" width="192">](https://deploy.stdlib.com/) <br />
+Now you are ready to click on the the button above to deploy our application. You will find yourself on the following page:
+
+![StatusPage](/readme/images/statusPage.png)
+
+From here, click on the blue **Link Resource** button and choose the Airtable base that we used previously. You will see a confirmation just below the button declaring that **Identity Generated**, and the blue **Deploy Project** button will become active. Click on that, and your project is officially live.
+
+To access your custom status page at any time, navigate to the following URL:
+
+```
+https://<Your-StdLib-Username>.api.stdlib.com/<Project-Name>@dev/
+```
+For <Project-Name\> above, use whatever you named your Project after clicking on the **Deploy** button. In my example provided, this would be **buildStatus**.
+
+That's it! You can come back and check the status of your site at any time. Hopefully your squares are nice and green! Stay up to date with the latest updates from Standard Library by following us on Twitter [@StdLibHQ](https://twitter.com/StdLibHQ), or check out our [blog here.](https://stdlib.com/blog)
