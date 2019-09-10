@@ -29,7 +29,7 @@ module.exports = async (url, displayName, id, isLastService, context) => {
     displayName: displayName,
     logs: logs,
     upTime: upTime,
-    latencyThreshold: 350,
+    latencyThreshold: parseInt(process.env.LATENCY_THRESHOLD),
     isLastService: isLastService
   }
 

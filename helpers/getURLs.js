@@ -1,6 +1,6 @@
 const lib = require('lib')({token: process.env.STDLIB_LIBRARY_TOKEN});
 
-module.exports = async () => {
+async function getData() {
   let workflow = {};
 
   workflow = await lib.airtable.query['@0.3.3'].select({

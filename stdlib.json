@@ -1,0 +1,22 @@
+{
+  "build": "faaslang",
+  "name": "kevinb/statusPage",
+  "timeout": 10000,
+  "env": [
+    {
+      "name": "LOGO_URL",
+      "description": "Insert a link to your logo.",
+      "defaultValue": "https://stdlib.com/static/images/standard-library-logo-wordmark.svg"
+    },
+    {
+      "name": "LATENCY_THRESHOLD",
+      "description": "Performance benchmark",
+      "defaultValue": "350"
+    },
+    {
+      "name": "MAIN_PAGE_URL",
+      "description": "Link to your main page",
+      "defaultValue": "https://stdlib.com"
+    }
+  ]
+}

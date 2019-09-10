@@ -1,11 +1,11 @@
+const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
+
 const path = require('path')
 const { promisify } = require('util')
 
 const renderFile = promisify(require('ejs').renderFile)
 
-const templatePath = path.join(__dirname, '/../static/components/index.ejs')
-
-const getURLS = require('../helpers/getURLs');
+const templatePath = path.join(__dirname, '/../static/components/index.ejs');
 
 let app
 
@@ -33,4 +33,18 @@ module.exports = async (context) => {
     body: app,
     statusCode: 200
   }
+}
+
+function getURLS() {
+  return lib.airtable.query['@0.3.3'].select({
+    table: "URIs"
+  }).then(r => { 
+    return r.rows.map(n => { 
+      return { 
+        url: n.fields.URL,
+        displayName: n.fields.Description,
+        id: n.id
+      } 
+    }) 
+  });
 }
