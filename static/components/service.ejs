@@ -35,7 +35,7 @@
                         <% return acc; %>
                       <% }, 0); %>
                       <% lat = Math.floor(lat / curr[hour].length); %>
-                      <div class="hour red">
+                      <div class="hour yellow">
                         <div class="hour-tooltip">
                           <div>
                             <%= `${hour}:00` %>
@@ -47,7 +47,7 @@
                       </div>
 
 
-                    <% } else if (curr[hour].responseCode > 399) { %>
+                    <% } else if (curr[hour].responseCode) { %>
                       <div class="hour red">
                         <div class="hour-tooltip">
                           <div>
