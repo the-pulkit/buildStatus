@@ -6,8 +6,6 @@ const renderFile = promisify(require('ejs').renderFile)
 const getData = require('../helpers/getData.js')
 const templatePath = path.join(__dirname, '/../static/components/service.ejs')
 
-let service
-
 /**
  * @param {string} url
  * @param {string} displayName
@@ -16,7 +14,6 @@ let service
  * @returns {object.http}
  */
 module.exports = async (url, displayName, id, isLastService, context) => {
-
   url = url.replace(/(^\w+:|^)\/\//, '')
   if (url.indexOf('/') !== -1) {
     url = url.slice(0, url.indexOf('/'))
@@ -33,9 +30,7 @@ module.exports = async (url, displayName, id, isLastService, context) => {
     isLastService: isLastService
   }
 
-  console.log(templateVars);
-
-  let service = (await renderFile(templatePath, templateVars))
+  let service = await renderFile(templatePath, templateVars)
 
   return {
     headers: {
