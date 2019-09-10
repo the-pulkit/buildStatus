@@ -16,7 +16,8 @@ module.exports = async () => {
     return r.rows.map(n => { 
       return { 
         url: n.fields.URL,
-        displayName: n.fields.Description 
+        displayName: n.fields.Description,
+        id: n.id
       } 
     }) 
   });

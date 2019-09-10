@@ -11,16 +11,18 @@ let service
 /**
  * @param {string} url
  * @param {string} displayName
+ * @param {string} id
  * @param {boolean} isLastService
  * @returns {object.http}
  */
-module.exports = async (url, displayName, isLastService, context) => {
-  let [logs, upTime] = await getData();
+module.exports = async (url, displayName, id, isLastService, context) => {
 
   url = url.replace(/(^\w+:|^)\/\//, '')
   if (url.indexOf('/') !== -1) {
     url = url.slice(0, url.indexOf('/'))
   }
+
+  let [logs, upTime] = await getData(id);
 
   let templateVars = {
     url: url,

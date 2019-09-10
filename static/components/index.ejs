@@ -24,11 +24,12 @@
 
     var services = <%- JSON.stringify(services) %>
     var displayNames = <%- JSON.stringify(displayNames) %>
+    var ids = <%- JSON.stringify(ids) %>
 
     services.map(function (service, index) {
       var isLastService = index === services.length - 1 ? true : false;
       console.log(isLastService);
-      lib['<%- servicePath %>.loadService']({ url: service, displayName: displayNames[index], isLastService }, function(err, results) {
+      lib['<%- servicePath %>.loadService']({ url: service, displayName: displayNames[index], id: ids[index], isLastService }, function(err, results) {
 
         if (err) {
           console.log(err);

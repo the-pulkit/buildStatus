@@ -17,6 +17,7 @@ module.exports = async (context) => {
   let templateVars = {
     displayNames: URLS.map(url => url.displayName),
     services: URLS.map(url => url.url),
+    ids: URLS.map(url => url.id),
     servicePath: context.service.identifier,
     title: 'Status',
     mainPageURL: process.env.MAIN_PAGE_URL,
