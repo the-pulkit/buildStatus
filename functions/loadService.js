@@ -33,9 +33,9 @@ module.exports = async (url, displayName, id, isLastService, context) => {
     isLastService: isLastService
   }
 
-  console.log(templateVars)
+  console.log(templateVars);
 
-  service = service || (await renderFile(templatePath, templateVars))
+  let service = (await renderFile(templatePath, templateVars))
 
   return {
     headers: {
