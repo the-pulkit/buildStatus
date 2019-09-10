@@ -54,7 +54,7 @@ module.exports = async url => {
     }
 
     if(row.Status !== 200) {
-      logs[day][hour][status] = 400;
+      logs[day][hour][responseCode] = 400;
     }
 
     logs[day][hour].push(row.Duration);
