@@ -21,7 +21,7 @@ module.exports = async (context) => {
     servicePath: context.service.identifier,
     title: 'Status',
     mainPageURL: process.env.MAIN_PAGE_URL,
-    logoURL: "https://stdlib.com/static/images/standard-library-logo-wordmark.svg"
+    logoURL: process.env.LOGO_URL
   }
 
   app = app || await renderFile(templatePath, templateVars)

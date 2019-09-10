@@ -29,7 +29,7 @@
                   <% if (curr && curr[hour]) { %>
 
 
-                    <% if (curr[hour].responseCode > 399 || !curr[hour].latency) { %>
+                    <% if (!curr[hour].latency) { %>
                       <% var lat = curr[hour].reduce((acc, cur) => { %>
                         <% acc = acc + cur; %>
                         <% return acc; %>
@@ -47,6 +47,17 @@
                       </div>
 
 
+                    <% } else if (curr[hour].responseCode > 399) { %>
+                      <div class="hour red">
+                        <div class="hour-tooltip">
+                          <div>
+                            <%= `${hour}:00` %>
+                            <span class="hour-tooltip-subtext">UTC</span></div>
+                          <div>
+                            <%= 'Status Code: ' + curr[hour].responseCode %>
+                          </div>
+                        </div>
+                      </div>
                     <% } else if (curr[hour].latency > latencyThreshold) { %>
 
                       <div class="hour yellow">

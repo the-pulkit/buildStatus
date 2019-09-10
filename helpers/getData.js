@@ -53,6 +53,10 @@ module.exports = async url => {
       logs[day][hour] = [];
     }
 
+    if(row.Status !== 200) {
+      logs[day][hour][status] = 400;
+    }
+
     logs[day][hour].push(row.Duration);
 
     if (logs[day][hour].length === 6) {
