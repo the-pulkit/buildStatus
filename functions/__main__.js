@@ -40,9 +40,10 @@ function getURLS() {
     table: "URIs"
   }).then(r => { 
     return r.rows.map(n => { 
+      let desc = n.fields.Description || "A Website";
       return { 
         url: n.fields.URL,
-        displayName: n.fields.Description,
+        displayName: desc,
         id: n.id
       } 
     }) 
