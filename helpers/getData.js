@@ -44,6 +44,7 @@ module.exports = async url => {
   const logs = data.reduce((logs, row) => {
     let day = row.TID.toString();
     let hour = row.Hour;
+    let responseCode = row.Status;
 
     if (!logs[day]) {
       logs[day] = {};
@@ -53,8 +54,8 @@ module.exports = async url => {
       logs[day][hour] = [];
     }
 
-    if(row.Status !== 200) {
-      logs[day][hour][responseCode] = 400;
+    if (responseCode !== 200) {
+      logs[day][hour]["responseCode"] = responseCode;
     }
 
     logs[day][hour].push(row.Duration);
@@ -64,9 +65,7 @@ module.exports = async url => {
         acc = acc + cur;
         return acc;
       }, 0);
-      logs[day][hour] = {
-        latency: [Math.trunc(total / logs[day][hour].length, 2)]
-      };
+      logs[day][hour]["latency"] =  [Math.trunc(total / logs[day][hour].length, 2)];
     }
 
     return logs;
