@@ -41,8 +41,9 @@ function getURLS() {
   }).then(r => { 
     return r.rows.map(n => { 
       let desc = n.fields.Description || "A Website";
+      let url = n.fields.URL || "Whoops! You forgot the URL!"
       return { 
-        url: n.fields.URL,
+        url: url,
         displayName: desc,
         id: n.id
       } 
