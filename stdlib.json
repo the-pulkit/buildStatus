@@ -1,7 +1,7 @@
 {
   "build": "faaslang",
   "name": "kevinb/statusPage",
-  "timeout": 40000,
+  "timeout": 30000,
   "env": [
     {
       "name": "LOGO_URL",
